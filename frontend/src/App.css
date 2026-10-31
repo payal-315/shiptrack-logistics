@@ -1,0 +1,161 @@
+nav {
+  height: 64px;
+  background: var(--navy);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+nav h2 {
+  font-size: 22px;
+}
+
+nav div {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  color: var(--white);
+  font-size: 15px;
+}
+
+/* =========================
+   CREATE SHIPMENT PAGE
+========================= */
+
+.create-shipment-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.create-shipment-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.create-shipment-header h1 {
+  color: var(--navy);
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.create-shipment-header p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.success-message {
+  background: #e8f5eb;
+  border: 1px solid #b9dfc0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.success-message strong {
+  color: var(--green);
+}
+
+.success-message span {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.create-shipment-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 28px;
+}
+
+.form-section h2 {
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.form-section > p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.create-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.create-form-group label {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.create-form-group input,
+.create-form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: var(--white);
+}
+
+.create-form-group input:focus,
+.create-form-group select:focus {
+  border-color: var(--blue);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  background: #f8fafc;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 700px) {
+
+  .create-shipment-page {
+    padding: 24px 16px;
+  }
+
+  .create-shipment-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

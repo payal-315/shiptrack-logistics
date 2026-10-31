@@ -1,0 +1,37 @@
+# Dependencies
+**/node_modules/
+
+# Build and test output
+**/dist/
+**/build/
+**/coverage/
+
+# Local runtime data and test databases
+backend/data/
+backend/backups/
+backend/tests/.mongo-test-*/
+**/uploads/
+
+# Secrets and local configuration, including examples
+.env
+.env.*
+**/.env
+**/.env.*
+*.env
+**/*.env
+
+# Logs and database dumps
+**/*.log
+**/*.dump
+**/*.bson
+**/*.sql
+
+# Credentials and machine-local files
+**/*.pem
+**/*.key
+**/*.p12
+**/.DS_Store
+**/Thumbs.db
+**/.vscode/
+**/.idea/
+**/.git_BACKUP/

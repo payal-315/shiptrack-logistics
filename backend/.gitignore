@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+coverage/
+data/
+backups/
+tests/.mongo-test-*/
+.env
+.env.*
+*.env
+*.log
+*.dump
+*.bson
+*.sql
+*.pem
+*.key
+*.p12
