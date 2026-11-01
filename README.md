@@ -178,6 +178,18 @@ Set-Location frontend
 npm run dev
 ```
 
+Bash equivalents (run each in its own terminal):
+
+```bash
+cd backend
+npm run dev
+```
+
+```bash
+cd frontend
+npm run dev
+```
+
 Open the frontend URL printed by Vite (normally `http://localhost:5173`). The
 backend health response is at `http://localhost:5000/`; API routes are under
 `http://localhost:5000/api`.
@@ -269,10 +281,28 @@ npm run lint
 npm run build
 ```
 
+Bash equivalent:
+
+```bash
+cd backend
+npm test
+npm run lint
+npm run build
+```
+
 Run frontend tests, lint, and production build:
 
 ```powershell
 Set-Location frontend
+npm test -- --maxWorkers=1
+npm run lint
+npm run build
+```
+
+Bash equivalent:
+
+```bash
+cd frontend
 npm test -- --maxWorkers=1
 npm run lint
 npm run build
