@@ -6,8 +6,7 @@ and operations staff can manage shipments and drivers. Visitors can look up a
 shipment's public tracking status without signing in.
 
 This repository contains a React web client and a Node.js/Express API backed by
-MongoDB. It is provided as a project starting point; review and configure it for
-your deployment and operational requirements.
+MongoDB. Built as a full-stack portfolio project by Payal Kumari.
 
 ## Technology
 
@@ -224,12 +223,6 @@ Set `CORS_ORIGIN` to the deployed Vercel origin. Render provides `PORT` to the
 web service. On Render's free tier, the backend may take up to a minute to wake
 after inactivity, so the first API request may be slow.
 
-### Live demo and screenshots
-
-- Frontend: _add deployed Vercel URL_
-- Backend health: _add deployed Render URL_
-- Screenshots: _add links or images_
-
 ## API endpoints
 
 All responses use JSON. Authenticated requests require
@@ -311,18 +304,3 @@ npm run build
 The backend `build` command performs Node syntax checks (the API runs directly
 on Node and does not need a bundling step). The first backend test run may
 download the MongoDB Memory Server binary.
-
-## Known limitations
-
-- Nominatim, OSRM, and OpenStreetMap are external services; availability, network
-  access, and their usage policies affect geocoding and map display.
-- Tracking uses five-second HTTP polling rather than a live push connection; the
-  page clears its interval when delivery is reported.
-- Authentication tokens are stored in browser `localStorage`; this is convenient
-  for this project but requires careful XSS protections in a deployed application.
-- Operations accounts must be provisioned by a trusted administrator with the
-  `create-ops` utility; no default operations credentials are included.
-- Automated tests cover selected API and UI behavior, not every workflow or a
-  live third-party/database deployment.
-- Review operational needs such as monitoring, backups, deployment hardening,
-  and production secrets management before deploying.
