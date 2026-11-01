@@ -6,7 +6,8 @@ and operations staff can manage shipments and drivers. Visitors can look up a
 shipment's public tracking status without signing in.
 
 This repository contains a React web client and a Node.js/Express API backed by
-MongoDB. It is a development project, not a production-readiness certification.
+MongoDB. It is provided as a project starting point; review and configure it for
+your deployment and operational requirements.
 
 ## Technology
 
@@ -30,12 +31,12 @@ MongoDB. It is a development project, not a production-readiness certification.
   without exposing customer or driver contact information
 - Shipment origin and destination are geocoded at creation; route geometry is
   fetched from OSRM by the map and falls back to a straight line if unavailable
-- Public tracking refreshes periodically and stops polling after delivery
 - Driver login has a dedicated page and navigation layout
 - Operations and drivers can choose stored route checkpoints; operations also has
   a custom-location option
-- Public and customer tracking refreshes every five seconds, animates the vehicle
-  marker, and updates the event history without a page refresh
+- Public and customer tracking refresh every five seconds, animate the vehicle
+  marker, update event history without a page refresh, and stop polling after
+  delivery
 
 ## Requirements
 
@@ -63,6 +64,19 @@ CORS_ORIGIN=http://localhost:5173
 '@ | Set-Content .env
 ```
 
+Bash equivalent:
+
+```bash
+cd backend
+cat > .env <<'EOF'
+MONGO_URI=your-mongodb-connection-string
+MONGO_DB_NAME=logisticsDB
+JWT_SECRET=replace-with-a-long-random-secret
+NODE_ENV=development
+CORS_ORIGIN=http://localhost:5173
+EOF
+```
+
 Backend environment variables:
 
 | Variable | Purpose |
@@ -87,9 +101,41 @@ Backend environment variables:
 npm install
 ```
 
-Customers and drivers can register through the application. Operations accounts
-must be provisioned directly in the database by a trusted administrator; this
-repository does not include a seed or operations-bootstrap utility.
+Customers and drivers can register through the application. A trusted
+administrator creates operations accounts with the `create-ops` utility. From
+the `backend` directory, set `OPS_EMAIL`, `OPS_PASSWORD`, and `OPS_NAME` in your
+shell or private environment, then run `npm run create-ops`. The same values can
+be supplied as command-line arguments:
+
+```text
+npm run create-ops -- --email <email> --password <password> --name <name>
+```
+
+The utility refuses duplicate email addresses and hashes passwords using the
+same bcrypt settings as signup. It never prints the password. Do not commit
+credentials or place them in shared command history.
+
+PowerShell example with a hidden password prompt:
+
+```powershell
+$securePassword = Read-Host "Operations password" -AsSecureString
+$env:OPS_EMAIL = "ops@example.com"
+$env:OPS_PASSWORD = [System.Net.NetworkCredential]::new("", $securePassword).Password
+$env:OPS_NAME = "Operations"
+npm run create-ops
+Remove-Item Env:OPS_EMAIL, Env:OPS_PASSWORD, Env:OPS_NAME
+```
+
+Bash equivalent:
+
+```bash
+read -r -p 'Operations email: ' OPS_EMAIL
+read -r -s -p 'Operations password: ' OPS_PASSWORD; echo
+read -r -p 'Operations name: ' OPS_NAME
+export OPS_EMAIL OPS_PASSWORD OPS_NAME
+npm run create-ops
+unset OPS_EMAIL OPS_PASSWORD OPS_NAME
+```
 
 ### 3. Configure and install the frontend
 
@@ -100,6 +146,16 @@ Set-Location frontend
 @'
 VITE_API_BASE_URL=http://localhost:5000/api
 '@ | Set-Content .env
+npm install
+```
+
+Bash equivalent:
+
+```bash
+cd frontend
+cat > .env <<'EOF'
+VITE_API_BASE_URL=http://localhost:5000/api
+EOF
 npm install
 ```
 
@@ -136,6 +192,31 @@ Set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and `MAIL_FROM` in the
 local backend environment to enable customer and driver reset emails. In
 development only, if SMTP is not configured, the OTP is printed to the backend
 console. Production never logs reset codes, so SMTP must be configured there.
+
+## Deployment (Vercel frontend, Render backend)
+
+Deploy the `frontend` directory as a Vercel project and the `backend` directory
+as a Render web service. Use `npm ci` and `npm run build` for builds; use
+`npm start` to start the backend. Configure these variable names in the
+platform dashboards and provide your own values:
+
+- **Vercel frontend:** `VITE_API_BASE_URL` (Render API URL ending in `/api`)
+- **Render backend:** `MONGO_URI`, `JWT_SECRET`, `NODE_ENV`, `CORS_ORIGIN`
+- **Render backend, optional:** `MONGO_DB_NAME`, `DRIVER_ORIGIN_RADIUS_KM`,
+  `DRIVER_LOCATION_MAX_AGE_MINUTES`, `DRIVER_MAX_LOCATION_ACCURACY_METERS`,
+  `ETA_MIN_DAYS`, `ETA_KM_PER_DAY`, `ETA_UNASSIGNED_BUFFER_DAYS`,
+  `DELAY_THRESHOLD_HOURS`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`,
+  `MAIL_FROM`
+
+Set `CORS_ORIGIN` to the deployed Vercel origin. Render provides `PORT` to the
+web service. On Render's free tier, the backend may take up to a minute to wake
+after inactivity, so the first API request may be slow.
+
+### Live demo and screenshots
+
+- Frontend: _add deployed Vercel URL_
+- Backend health: _add deployed Render URL_
+- Screenshots: _add links or images_
 
 ## API endpoints
 
@@ -209,8 +290,8 @@ download the MongoDB Memory Server binary.
   page clears its interval when delivery is reported.
 - Authentication tokens are stored in browser `localStorage`; this is convenient
   for this project but requires careful XSS protections in a deployed application.
-- Operations accounts need trusted manual provisioning because no seed utility
-  or default operations credentials are included.
+- Operations accounts must be provisioned by a trusted administrator with the
+  `create-ops` utility; no default operations credentials are included.
 - Automated tests cover selected API and UI behavior, not every workflow or a
   live third-party/database deployment.
 - Review operational needs such as monitoring, backups, deployment hardening,

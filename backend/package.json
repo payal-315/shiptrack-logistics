@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "create-ops": "node scripts/create-ops-user.js",
     "build": "node --check server.js && node --check app.js && node --check controllers/authController.js && node --check controllers/driverController.js && node --check controllers/shipmentController.js && node --check controllers/trackingController.js",
     "reset-data": "node scripts/reset-data.js",
     "lint": "node ../frontend/node_modules/eslint/bin/eslint.js --config eslint.config.mjs .",
